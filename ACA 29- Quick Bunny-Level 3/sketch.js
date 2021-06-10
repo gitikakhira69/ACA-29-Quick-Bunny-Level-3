@@ -1,7 +1,7 @@
 var rabbit,rabbitImg;
 var carrot,carrotImg;
 var edges;
-var snake,sankeImg;
+var snake,sankeImg,snakeGroup;
 var bg;
 function preload() {
   rabbitImg = loadImage("images/bunnyImg.png");
@@ -48,6 +48,8 @@ function setup() {
   obs8=createSprite(50,350,100,20)
   obs8.velocityX=-5;
   obs8.shapeColor="blue";
+
+  snakeGroup = new Group();
 }
 
 function draw() {
@@ -82,9 +84,15 @@ function draw() {
   else if(obs8.x<0) {
     obs8.x=600;
   }
-  snakeGroup()
   
-  generateSnakes()
+  generateSnakes();
+  for(var i=0;i<(snakeGroup).length;i++){
+    var temp = (snakeGroup).get(i);
+    if(rabbit.isTouching(temp)){
+      rabbit.x=50;
+      rabbit.y=550;
+    }
+  }
 
   if(keyDown("up"))
   {
@@ -120,23 +128,11 @@ function draw() {
   }
   drawSprites();
 }
-function snakeGroup(){
-  if(frameCount % 50 ===0){
-  var snake = createSprite(random(70,500),random(500,120),100,5);
-  snake.addImage(sankeImg);
-  snake.scale = random(0.1,0.4);
-  snake.shapeColor="yellow";}
-
-}
-function generateSnakes()
-{
-  for(var i=0;i<(snakeGroup).length;i++)
-  {
-    var temp = (snakeGroup).get(i)
-    if(rabbit.isTouching(temp))
-    {
-      rabbit.x=50;
-      rabbit.y=550;
-    }
+function generateSnakes(){
+  if(frameCount %  50 === 0){
+    var snake = createSprite(random(70,500),random(500,120));
+    snake.addImage(sankeImg);
+    snake.scale=random(0.1,0.4);
+    snakeGroup.add(snake);
   }
 }
